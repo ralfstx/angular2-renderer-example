@@ -15,6 +15,7 @@ import {
     provide,
     Provider
 } from 'angular2/core';
+import {COMPILER_PROVIDERS} from 'angular2/compiler';
 
 import {CustomDomAdapter} from './custom-dom-adapter';
 import {CustomRenderer, CustomRootRenderer, Widget} from './custom-renderer';
@@ -41,6 +42,7 @@ export function customBootstrap(appComponentType: any, customProviders: Provider
 
   let appProviders = [
     APPLICATION_COMMON_PROVIDERS,
+    COMPILER_PROVIDERS,
     CustomRootRenderer,
     provide(RootRenderer, {useClass: CustomRootRenderer}),
     CustomRenderer,
