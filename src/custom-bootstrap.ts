@@ -16,7 +16,9 @@ import {
     Provider
 } from 'angular2/core';
 import {COMPILER_PROVIDERS} from 'angular2/compiler';
+import {XHR} from 'angular2/src/compiler/xhr';
 
+import {XHRShim} from './xhr-shim';
 import {CustomDomAdapter} from './custom-dom-adapter';
 import {CustomRenderer, CustomRootRenderer, Widget} from './custom-renderer';
 
@@ -37,6 +39,7 @@ export function customBootstrap(appComponentType: any, customProviders: Provider
   };
   let platformProviders = [
     PLATFORM_COMMON_PROVIDERS,
+    provide(XHR, {useClass: XHRShim}),
     provide(ExceptionHandler, {useFactory: () => new ExceptionHandler(logger, true), deps: []})
   ];
 
