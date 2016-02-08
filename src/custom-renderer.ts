@@ -14,8 +14,7 @@ export class CustomRootRenderer extends RootRenderer {
 
     renderComponent(componentProto: RenderComponentType): Renderer {
         var renderer = this._registeredComponents.get(componentProto.id);
-        if (renderer) {
-//            renderer = new CustomRenderer(this, componentProto);
+        if (!renderer) {
             renderer = new CustomRenderer(this);
             this._registeredComponents.set(componentProto.id, renderer);
         }
@@ -26,7 +25,6 @@ export class CustomRootRenderer extends RootRenderer {
 @Injectable()
 export class CustomRenderer extends Renderer {
 
-//    constructor(private _rootRenderer: CustomRootRenderer, private componentProto: RenderComponentType) {
     constructor(private _rootRenderer: CustomRootRenderer) {
         super();
         console.log('CustomRenderer created');
