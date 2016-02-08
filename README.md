@@ -6,8 +6,8 @@ The idea is to run a minimal Angular2 example application on Node.js using a cus
 
 Prepare:
 
+    npm install -g typescript
     npm install
-    tsd install angular2
 
 Compile:
 
