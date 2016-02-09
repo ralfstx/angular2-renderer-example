@@ -1,8 +1,4 @@
-import 'es6-promise';
-import 'es6-shim';
 import 'reflect-metadata';
-import 'rxjs';
-global.Zone = require('zone.js');
 
 import {
     platform,
