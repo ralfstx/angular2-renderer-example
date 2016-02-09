@@ -6,7 +6,14 @@ import {
     RenderComponentType
 } from 'angular2/core';
 
-export type Widget = any;
+export class Element {
+    constructor(private nodeName: string, private parent?: Element) {
+        
+    }
+    toString() {
+        return '<' + this.nodeName + '>';
+    }
+};
 
 @Injectable()
 export class CustomRootRenderer extends RootRenderer {
@@ -30,92 +37,89 @@ export class CustomRenderer extends Renderer {
         console.log('CustomRenderer created');
     }
 
-    renderComponent(componentProto: RenderComponentType): Renderer {
-        return this._rootRenderer.renderComponent(componentProto);
+    renderComponent(componentType: RenderComponentType): Renderer {
+        return this._rootRenderer.renderComponent(componentType);
     }
 
-    selectRootElement(selector: string): Widget {
-        console.log('selectRootElement');
-        const page = {nodeName: "Root"};
-        return page;
+    selectRootElement(selector: string): Element {
+        console.log('selectRootElement', selector);
+        return new Element('Root');
     }
 
-    createViewRoot(hostElement: Widget): Widget {
-        console.log('createViewRoot', hostElement.nodeName);
+    createElement(parentElement: Element, name: string): Element {
+        console.log('createElement', 'parent: ' + parentElement, 'name: ' + name);
+        return new Element(name, parentElement);
+    }
+
+    createViewRoot(hostElement: Element): Element {
+        console.log('createViewRoot', 'host: ' + hostElement);
         return hostElement;
     }
 
-    projectNodes(parentElement: Widget, nodes: Widget[]): void {
-        console.log('projectNodes');
+    createTemplateAnchor(parentElement: Element): Element {
+        console.log('createTemplateAnchor', 'parent: ' + parentElement);
+        return new Element('?');
     }
 
-    attachViewAfter(anchorNode: Widget, viewRootNodes: Widget[]) {
-        console.log('attachViewAfter', anchorNode.nodeName, anchorNode);
+    createText(parentElement: Element, value: string): Element {
+        console.log('createText', 'parent: ' + parentElement, 'value: ' + value);
+        return new Element('text');
     }
 
-    detachView(viewRootNodes: Widget[]) {
-        console.log('detachView');
+    projectNodes(parentElement: Element, nodes: Element[]) {
+        console.log('projectNodes', 'parent: ' + parentElement, 'nodes: ' + nodes.map(node => node.toString()));
     }
 
-    animateNodeEnter(node: Widget) {
+    attachViewAfter(node: Element, viewRootNodes: Element[]) {
+        console.log('attachViewAfter', 'node: ' + node, 'viewRootNodes: ' + viewRootNodes.map(node => node.toString()));
     }
 
-    animateNodeLeave(node: Widget) {
+    detachView(viewRootNodes: Element[]) {
+        console.log('detachView', 'viewRootNodes: ' + viewRootNodes.map(node => node.toString()));
     }
 
-    public destroyView(hostElement: Widget, viewAllNodes: Widget[]) {
-        console.log("destroyView");
+    destroyView(hostElement: Element, viewAllNodes: Element[]) {
+        console.log('destroyView', 'host: ' + hostElement, 'viewAllNodes: ' + viewAllNodes.map(node => node.toString()));
     }
 
-    setElementProperty(renderElement: Widget, propertyName: string, propertyValue: any) {
-        console.log("setElementProperty", renderElement.nodeName, propertyName, propertyValue);
+    setElementProperty(renderElement: Element, propertyName: string, propertyValue: any): void {
+        console.log('setElementProperty', 'element: ' + renderElement, 'name: ' + propertyName, 'value: ' + propertyValue);
     }
 
-    setElementAttribute(renderElement: Widget, attributeName: string, attributeValue: string) {
-        console.log("setElementAttribute", renderElement.nodeName, attributeName, attributeValue);
+    setElementAttribute(renderElement: Element, attributeName: string, attributeValue: string): void {
+        console.log('setElementAttribute', 'element: ' + renderElement, 'name: ' + attributeName, 'value: ' + attributeValue);
         return this.setElementProperty(renderElement, attributeName, attributeValue);
     }
 
-    setElementClass(renderElement: Widget, className: string, isAdd: boolean): void {
-        console.log("setElementClass", className, isAdd);
-    }
-
-    setElementStyle(renderElement: Widget, styleName: string, styleValue: string): void {
-        console.log("setElementStyle", styleName, styleValue);
-    }
-
-    setBindingDebugInfo(renderElement: Widget, propertyName: string, propertyValue: string): void {
-        console.log('setBindingDebugInfo: ' + renderElement.nodeName + ', ' + propertyName + ' = ' + propertyValue);
-    }
-
-    invokeElementMethod(renderElement: Widget, methodName: string, args: Array<any>) {
-        console.log("invokeElementMethod " + methodName + " " + args);
-    }
-
-    setText(renderNode: any, text: string) {
-        console.log("setText");
-    }
-
-    public createTemplateAnchor(parentElement: Widget): Widget {
-        console.log('createTemplateAnchor');
-    }
-
-    public createElement(parentElement: Widget, name: string): Widget {
-        console.log('createElement: ' + name + ' parent: ' + parentElement + ', ' + (parentElement ? parentElement.nodeName : 'null'));
-        return {nodeName: name, parent: parentElement};
-    }
-
-    public createText(value: string): Widget {
-        console.log('createText');
-        return null;
-    }
-
-    public listen(renderElement: Widget, eventName: string, callback: Function): Function {
-        console.log('listen: ' + eventName);
+    listen(renderElement: Element, eventName: string, callback: Function): Function {
+        console.log('listen', 'element: ' + renderElement, 'eventName: ' + eventName);
         return function() {};
     }
 
-    public listenGlobal(target: string, eventName: string, callback: Function): Function {
-        throw new Error('Not implemented.');
+    listenGlobal(target: string, eventName: string, callback: Function): Function {
+        console.log('listen', 'target: ' + target, 'eventName: ' + eventName);
+        return function() {};
+    }
+
+    // Used only in debug mode to serialize property changes to comment nodes,
+    // such as <template> placeholders.
+    setBindingDebugInfo(renderElement: Element, propertyName: string, propertyValue: string): void {
+        console.log('setBindingDebugInfo', 'element: ' + renderElement, 'name: ' + propertyName, 'value: ' + propertyValue);
+    }
+
+    setElementClass(renderElement: Element, className: string, isAdd: boolean): void {
+        console.log('setElementClass', 'className' + className, 'isAdd: ' + isAdd);
+    }
+
+    setElementStyle(renderElement: Element, styleName: string, styleValue: string): void {
+        console.log('setElementStyle', 'name: ' + styleName, 'value: ' + styleValue);
+    }
+
+    invokeElementMethod(renderElement: Element, methodName: string, args: Array<any>) {
+        console.log('invokeElementMethod', 'name: ' + methodName, 'args: ' + args);
+    }
+
+    setText(renderNode: Element, text: string): void {
+        console.log('setText', 'node: ' + renderNode, 'text: ' + text);
     }
 }

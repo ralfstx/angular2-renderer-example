@@ -20,7 +20,7 @@ import {XHR} from 'angular2/src/compiler/xhr';
 
 import {XHRShim} from './xhr-shim';
 import {CustomDomAdapter} from './custom-dom-adapter';
-import {CustomRenderer, CustomRootRenderer, Widget} from './custom-renderer';
+import {CustomRenderer, CustomRootRenderer} from './custom-renderer';
 
 export function customBootstrap(appComponentType: any, customProviders: Provider[] = null): Promise<ComponentRef> {
 
