@@ -2,6 +2,6 @@ import {Component} from 'angular2/core';
 
 @Component({
     selector: 'my-app',
-    template: '<h1>My First Angular 2 App</h1>'
+    template: '<Page topLevel="true" title="Angular 2"><Button text="Hello" centerX="0" centerY="0"></Button></Page>'
 })
 export class AppComponent { }
