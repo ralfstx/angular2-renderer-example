@@ -1,4 +1,4 @@
-import {Component} from 'angular2/core';
+import {Component} from 'tabris-ng';
 
 @Component({
     selector: 'my-app',

@@ -7,15 +7,16 @@ The idea is to run a minimal Angular2 example application on Node.js using a cus
 Prepare:
 
     npm install -g typescript
+    npm install -g webpack
     npm install
 
 Compile:
 
     tsc -p .
 
-Run:
+Webpack:
 
-    node src/app/boot.js
+    webpack --config webpack.conf
 
 ## License
 

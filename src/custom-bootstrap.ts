@@ -20,6 +20,8 @@ import {XHRShim} from './xhr-shim';
 import {CustomDomAdapter} from './custom-dom-adapter';
 import {CustomRenderer, CustomRootRenderer} from './custom-renderer';
 
+export * from 'angular2/core';
+
 export function customBootstrap(appComponentType: any, customProviders: Provider[] = null): Promise<ComponentRef> {
 
   CustomDomAdapter.makeCurrent();

@@ -1,4 +1,4 @@
-import {customBootstrap} from '../custom-bootstrap';
+import {customBootstrap} from 'tabris-ng';
 import {AppComponent} from './app.components';
 import * as tabris from 'tabris';
 
