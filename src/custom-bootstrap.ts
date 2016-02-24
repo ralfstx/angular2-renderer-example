@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+global.Zone = require('zone.js');
 
 import {
     platform,
