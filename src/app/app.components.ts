@@ -1,7 +1,26 @@
 import {Component} from 'tabris-ng';
 
 @Component({
-    selector: 'my-app',
-    template: '<Page topLevel="true" title="Angular 2"><Button text="Hello" centerX="0" centerY="0"></Button></Page>'
+  selector: 'my-app',
+  template: `
+    <Page topLevel="true" title="{{title}}">
+      <Button centerX="0" centerY="0"
+          font="24px Roboto"
+          text="Native Widgets"
+          (select)="onSelect()">
+      </Button>
+      <TextView top="prev()" centerX="0"
+          font="bold 28px Roboto"
+          [text]="label">
+      </TextView>
+    </Page>
+  `
 })
-export class AppComponent { }
+export class AppComponent {
+  public title = 'Tabris.ng';
+  public label = '';
+
+  onSelect() {
+    this.label = 'Totally Rock!';
+  }
+}

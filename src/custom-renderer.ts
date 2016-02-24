@@ -91,12 +91,14 @@ export class CustomRenderer extends Renderer {
 
     listen(renderElement: any, eventName: string, callback: Function): Function {
         console.log('listen', 'element: ' + renderElement, 'eventName: ' + eventName);
-        return function() {};
+        let zonedCallback = (<any>global).zone.bind(callback);
+        renderElement.on(eventName, zonedCallback);
+        return () => renderElement.off(eventName, zonedCallback);
     }
 
     listenGlobal(target: string, eventName: string, callback: Function): Function {
-        console.log('listen', 'target: ' + target, 'eventName: ' + eventName);
-        return function() {};
+        console.warn('Not implemented: listenGlobal', 'target: ' + target, 'eventName: ' + eventName);
+        return () => {};
     }
 
     // Used only in debug mode to serialize property changes to comment nodes,
