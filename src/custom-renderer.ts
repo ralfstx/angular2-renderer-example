@@ -81,12 +81,12 @@ export class CustomRenderer extends Renderer {
 
     setElementProperty(renderElement: any, propertyName: string, propertyValue: any): void {
         console.log('setElementProperty', 'element: ' + renderElement, 'name: ' + propertyName, 'value: ' + propertyValue);
-        renderElement.set(propertyName, propertyValue);
+        renderElement.set(propertyName, normalize(propertyValue));
     }
 
     setElementAttribute(renderElement: any, attributeName: string, attributeValue: string): void {
         console.log('setElementAttribute', 'element: ' + renderElement, 'name: ' + attributeName, 'value: ' + attributeValue);
-        return this.setElementProperty(renderElement, attributeName, attributeValue);
+        renderElement.set(attributeName, normalize(attributeValue));
     }
 
     listen(renderElement: any, name: string, callback: Function): Function {
@@ -127,4 +127,12 @@ export class CustomRenderer extends Renderer {
         console.warn('text not supported outside of widgets', 'text: ' + text);
     }
 
+}
+
+function normalize(value) {
+  // TODO tabris does not always convert strings to numbers
+  if (/^\d+$/.test(value)) {
+    return parseInt(value, 10);
+  }
+  return value;
 }
