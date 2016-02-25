@@ -89,15 +89,15 @@ export class CustomRenderer extends Renderer {
         return this.setElementProperty(renderElement, attributeName, attributeValue);
     }
 
-    listen(renderElement: any, eventName: string, callback: Function): Function {
-        console.log('listen', 'element: ' + renderElement, 'eventName: ' + eventName);
+    listen(renderElement: any, name: string, callback: Function): Function {
+        console.log('listen', 'element: ' + renderElement, 'name: ' + name);
         let zonedCallback = (<any>global).zone.bind(callback);
-        renderElement.on(eventName, zonedCallback);
-        return () => renderElement.off(eventName, zonedCallback);
+        renderElement.on(name, zonedCallback);
+        return () => renderElement.off(name, zonedCallback);
     }
 
-    listenGlobal(target: string, eventName: string, callback: Function): Function {
-        console.warn('Not implemented: listenGlobal', 'target: ' + target, 'eventName: ' + eventName);
+    listenGlobal(target: string, name: string, callback: Function): Function {
+        console.warn('Not implemented: listenGlobal', 'target: ' + target, 'name: ' + name);
         return () => {};
     }
 
@@ -105,6 +105,10 @@ export class CustomRenderer extends Renderer {
     // such as <template> placeholders.
     setBindingDebugInfo(renderElement: any, propertyName: string, propertyValue: string): void {
         console.log('setBindingDebugInfo', 'element: ' + renderElement, 'name: ' + propertyName, 'value: ' + propertyValue);
+    }
+
+    setElementDebugInfo(renderElement: any, info: RenderDebugInfo): void {
+        console.log('setElementDebugInfo', 'element: ' + renderElement, 'info: ' + info);
     }
 
     setElementClass(renderElement: any, className: string, isAdd: boolean): void {
@@ -115,11 +119,12 @@ export class CustomRenderer extends Renderer {
         console.log('setElementStyle', 'name: ' + styleName, 'value: ' + styleValue);
     }
 
-    invokeElementMethod(renderElement: any, methodName: string, args: Array<any>) {
+    invokeElementMethod(renderElement: any, methodName: string, args: any[]) {
         console.log('invokeElementMethod', 'name: ' + methodName, 'args: ' + args);
     }
 
     setText(renderNode: any, text: string): void {
         console.warn('text not supported outside of widgets', 'text: ' + text);
     }
+
 }

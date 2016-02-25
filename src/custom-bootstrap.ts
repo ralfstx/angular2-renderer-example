@@ -4,12 +4,9 @@ import 'reflect-metadata';
 
 // install zone.js without browser patches
 (global => {
-  let doc = global.document;
-  global.document = undefined;
   global.HTMLElement = function() {};
-  global.Zone = require('zone.js');
+  require('zone.js');
   delete global.HTMLElement;
-  global.document = doc;
 })(global);
 
 import {
