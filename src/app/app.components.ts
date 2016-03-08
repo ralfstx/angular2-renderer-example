@@ -9,8 +9,8 @@ import {Component} from 'tabris-ng';
           text="Native Widgets"
           (select)="onSelect()">
       </Button>
-      <TextView top="prev()" centerX="0"
-          font="bold 28px Roboto"
+      <TextView top="prev() 16" centerX="0"
+          font="bold 32px Roboto"
           [text]="label">
       </TextView>
     </Page>
