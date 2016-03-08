@@ -14,9 +14,13 @@ Compile:
 
     tsc -p .
 
-Webpack:
+Build Tabris-ng (webpack):
 
-    webpack --config webpack.conf
+    npm run build
+
+Start HTTP Server:
+
+    npm run server
 
 ## License
 
