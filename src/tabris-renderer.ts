@@ -1,33 +1,33 @@
 import {
-    Inject,
-    Injectable,
-    Renderer,
-    RootRenderer,
-    RenderComponentType
+  Inject,
+  Injectable,
+  Renderer,
+  RootRenderer,
+  RenderComponentType
 } from 'angular2/core';
 import * as tabris from 'tabris';
 
 @Injectable()
-export class CustomRootRenderer extends RootRenderer {
-    private _registeredComponents: Map<string, CustomRenderer> = new Map<string, CustomRenderer>();
+export class TabrisRootRenderer extends RootRenderer {
+  private _registeredComponents: Map<string, TabrisRenderer> = new Map<string, TabrisRenderer>();
 
-    renderComponent(componentProto: RenderComponentType): Renderer {
-        var renderer = this._registeredComponents.get(componentProto.id);
-        if (!renderer) {
-            renderer = new CustomRenderer(this);
-            this._registeredComponents.set(componentProto.id, renderer);
-        }
-        return renderer;
+  renderComponent(componentProto: RenderComponentType): Renderer {
+    var renderer = this._registeredComponents.get(componentProto.id);
+    if (!renderer) {
+      renderer = new TabrisRenderer(this);
+      this._registeredComponents.set(componentProto.id, renderer);
     }
+    return renderer;
+  }
 }
 
 @Injectable()
-export class CustomRenderer extends Renderer {
+export class TabrisRenderer extends Renderer {
 
-    constructor(private _rootRenderer: CustomRootRenderer) {
-        super();
-        console.log('CustomRenderer created');
-    }
+  constructor(private _rootRenderer: TabrisRootRenderer) {
+    super();
+    console.log('TabrisRenderer created');
+  }
 
     renderComponent(componentType: RenderComponentType): Renderer {
         return this._rootRenderer.renderComponent(componentType);

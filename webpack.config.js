@@ -4,7 +4,7 @@ var UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
 var OccurenceOrderPlugin = require('webpack/lib/optimize/OccurenceOrderPlugin');
 
 module.exports = {
-  entry: "./src/custom-bootstrap.js",
+  entry: "./src/tabris-bootstrap.js",
   output: {
     filename: "node_modules/tabris-ng.js",
     library: "tabris-ng",

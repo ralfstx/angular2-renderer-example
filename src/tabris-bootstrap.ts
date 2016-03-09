@@ -8,28 +8,28 @@ import 'reflect-metadata';
 })(global);
 
 import {
-    platform,
-    ComponentRef,
-    ExceptionHandler,
-    Renderer,
-    RootRenderer,
-    APPLICATION_COMMON_PROVIDERS,
-    PLATFORM_COMMON_PROVIDERS,
-    provide,
-    Provider
+  platform,
+  ComponentRef,
+  ExceptionHandler,
+  Renderer,
+  RootRenderer,
+  APPLICATION_COMMON_PROVIDERS,
+  PLATFORM_COMMON_PROVIDERS,
+  provide,
+  Provider
 } from 'angular2/core';
 import {COMPILER_PROVIDERS} from 'angular2/compiler';
 import {XHR} from 'angular2/src/compiler/xhr';
 
 import {XHRShim} from './xhr-shim';
-import {CustomDomAdapter} from './custom-dom-adapter';
-import {CustomRenderer, CustomRootRenderer} from './custom-renderer';
+import {TabrisDomAdapter} from './tabris-dom-adapter';
+import {TabrisRenderer, TabrisRootRenderer} from './tabris-renderer';
 
 export * from 'angular2/core';
 
-export function customBootstrap(appComponentType: any, customProviders: Provider[] = null): Promise<ComponentRef> {
+export function bootstrap(appComponentType: any, tabrisProviders: Provider[] = null): Promise<ComponentRef> {
 
-  CustomDomAdapter.makeCurrent();
+  TabrisDomAdapter.makeCurrent();
 
   let logger = {
     logGroup: () => {
@@ -51,13 +51,13 @@ export function customBootstrap(appComponentType: any, customProviders: Provider
   let appProviders = [
     APPLICATION_COMMON_PROVIDERS,
     COMPILER_PROVIDERS,
-    CustomRootRenderer,
-    provide(RootRenderer, {useClass: CustomRootRenderer}),
-    CustomRenderer,
-    provide(Renderer, {useClass: CustomRenderer})
+    TabrisRootRenderer,
+    provide(RootRenderer, {useClass: TabrisRootRenderer}),
+    TabrisRenderer,
+    provide(Renderer, {useClass: TabrisRenderer})
   ];
-  if (customProviders) {
-      appProviders.push(customProviders);
+  if (tabrisProviders) {
+    appProviders.push(tabrisProviders);
   }
 
   return platform(platformProviders).application(appProviders).bootstrap(appComponentType);
