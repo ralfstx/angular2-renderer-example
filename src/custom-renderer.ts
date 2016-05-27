@@ -1,5 +1,4 @@
 import {
-    Inject,
     Injectable,
     Renderer,
     RootRenderer,
@@ -8,7 +7,7 @@ import {
 
 export class Element {
     constructor(private nodeName: string, private parent?: Element) {
-        
+
     }
     toString() {
         return '<' + this.nodeName + '>';
@@ -93,12 +92,12 @@ export class CustomRenderer extends Renderer {
 
     listen(renderElement: Element, eventName: string, callback: Function): Function {
         console.log('listen', 'element: ' + renderElement, 'eventName: ' + eventName);
-        return function() {};
+        return function () { };
     }
 
     listenGlobal(target: string, eventName: string, callback: Function): Function {
         console.log('listen', 'target: ' + target, 'eventName: ' + eventName);
-        return function() {};
+        return function () { };
     }
 
     // Used only in debug mode to serialize property changes to comment nodes,

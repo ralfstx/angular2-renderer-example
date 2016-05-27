@@ -3,15 +3,15 @@ import {setRootDomAdapter} from '@angular/platform-browser/src/dom/dom_adapter';
 import {Type} from '@angular/common/src/facade/lang';
 
 export class CustomDomAdapter extends Parse5DomAdapter {
-  static makeCurrent() { setRootDomAdapter(new CustomDomAdapter()); }
+    static makeCurrent() { setRootDomAdapter(new CustomDomAdapter()); }
 
-  getXHR(): Type {
-      console.log('getXHR!');
-      return null;
-  }
+    getXHR(): Type {
+        console.log('getXHR!');
+        return null;
+    }
 
-  hasProperty(element, name: string) {
-      //TODO: actually check if the property exists.
-      return true;
-  }
+    hasProperty(element:Element, name: string) {
+        //TODO: actually check if the property exists.
+        return true;
+    }
 }

@@ -1,34 +1,25 @@
-// import 'globals';
-import "zone.js/dist/zone-node"
 
+import 'zone.js/dist/zone-node';
 import 'reflect-metadata';
-// var Promise = require('es6-promise').Promise;
-
-// global.Zone = require('zone.js');
-
-
 import {
-   createPlatform,
-   
-   reflector,
-   getPlatform,
-    ApplicationRef,
-    ComponentRef,
-    ExceptionHandler,
-    
-    Renderer,
-    RootRenderer,
-    APPLICATION_COMMON_PROVIDERS,
-    PLATFORM_COMMON_PROVIDERS,
-    ReflectiveInjector,
-    coreLoadAndBootstrap,
-    provide,
-    Provider
+  createPlatform,
+  reflector,
+  getPlatform,
+  ComponentRef,
+  ExceptionHandler,
+  Renderer,
+  RootRenderer,
+  APPLICATION_COMMON_PROVIDERS,
+  PLATFORM_COMMON_PROVIDERS,
+  ReflectiveInjector,
+  coreLoadAndBootstrap,
+  provide,
+  Provider
 } from '@angular/core';
 import {SanitizationService} from '@angular/core/src/security';
 import {COMPILER_PROVIDERS} from '@angular/compiler';
 import {ReflectionCapabilities} from '@angular/core/src/reflection/reflection_capabilities';
-import {isPresent, Type, print} from '@angular/core/src/facade/lang';
+import {isPresent} from '@angular/core/src/facade/lang';
 import {XHR} from '@angular/compiler/src/xhr';
 
 import {XHRShim} from './xhr-shim';
@@ -43,7 +34,7 @@ export function customBootstrap(appComponentType: any, customProviders: Provider
     logGroup: () => {
       console.log('---');
     },
-    logError: (error) => {
+    logError: (error: Error) => {
       console.error(error);
     },
     logGroupEnd: () => {
@@ -52,31 +43,31 @@ export function customBootstrap(appComponentType: any, customProviders: Provider
   };
   let platformProviders = [
     PLATFORM_COMMON_PROVIDERS,
-    provide(XHR, {useClass: XHRShim}),
-    provide(ExceptionHandler, {useFactory: () => new ExceptionHandler(logger, true), deps: []})
+    provide(XHR, { useClass: XHRShim }),
+    provide(ExceptionHandler, { useFactory: () => new ExceptionHandler(logger, true), deps: [] })
   ];
 
   let appProviders = [
     APPLICATION_COMMON_PROVIDERS,
     COMPILER_PROVIDERS,
-SanitizationService,
+    SanitizationService,
     CustomRootRenderer,
-    provide(RootRenderer, {useClass: CustomRootRenderer}),
+    provide(RootRenderer, { useClass: CustomRootRenderer }),
     CustomRenderer,
-    provide(Renderer, {useClass: CustomRenderer})
+    provide(Renderer, { useClass: CustomRenderer })
   ];
   if (customProviders) {
-      appProviders.push(customProviders);
+    appProviders.push(customProviders);
   }
-  
-    var platform = getPlatform();    
-    if (!isPresent(platform)) {
-        platform = createPlatform(ReflectiveInjector.resolveAndCreate(platformProviders));
-    }
+
+  let platform = getPlatform();
+  if (!isPresent(platform)) {
+    platform = createPlatform(ReflectiveInjector.resolveAndCreate(platformProviders));
+  }
 
 
-    reflector.reflectionCapabilities = new ReflectionCapabilities();
-    var appInjector = ReflectiveInjector.resolveAndCreate(appProviders, platform.injector);
-    return coreLoadAndBootstrap(appInjector, appComponentType);
+  reflector.reflectionCapabilities = new ReflectionCapabilities();
+  let appInjector = ReflectiveInjector.resolveAndCreate(appProviders, platform.injector);
+  return coreLoadAndBootstrap(appInjector, appComponentType);
 }
 
