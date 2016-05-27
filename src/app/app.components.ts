@@ -1,7 +1,17 @@
-import {Component} from 'angular2/core';
+import {Component} from '@angular/core';
+import {Logger} from './logger.service'
 
 @Component({
     selector: 'my-app',
-    template: '<h1>My First Angular 2 App</h1>'
+    template: '',
+    providers: [Logger]
 })
-export class AppComponent { }
+export class AppComponent { 
+    
+    constructor(
+        private logger: Logger
+    ){
+       this.logger.log(`Logged with dependency injection.`);
+    }
+    
+}

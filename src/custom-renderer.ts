@@ -4,7 +4,7 @@ import {
     Renderer,
     RootRenderer,
     RenderComponentType
-} from 'angular2/core';
+} from '@angular/core';
 
 export class Element {
     constructor(private nodeName: string, private parent?: Element) {
