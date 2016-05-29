@@ -1,25 +1,32 @@
-import 'reflect-metadata';
-global.Zone = require('zone.js');
 
+import 'zone.js/dist/zone-node';
+import 'reflect-metadata';
 import {
-    platform,
-    ComponentRef,
-    ExceptionHandler,
-    Renderer,
-    RootRenderer,
-    APPLICATION_COMMON_PROVIDERS,
-    PLATFORM_COMMON_PROVIDERS,
-    provide,
-    Provider
-} from 'angular2/core';
-import {COMPILER_PROVIDERS} from 'angular2/compiler';
-import {XHR} from 'angular2/src/compiler/xhr';
+  createPlatform,
+  reflector,
+  getPlatform,
+  ComponentRef,
+  ExceptionHandler,
+  Renderer,
+  RootRenderer,
+  APPLICATION_COMMON_PROVIDERS,
+  PLATFORM_COMMON_PROVIDERS,
+  ReflectiveInjector,
+  coreLoadAndBootstrap,
+  provide,
+  Provider
+} from '@angular/core';
+import {SanitizationService} from '@angular/core/src/security';
+import {COMPILER_PROVIDERS} from '@angular/compiler';
+import {ReflectionCapabilities} from '@angular/core/src/reflection/reflection_capabilities';
+import {isPresent} from '@angular/core/src/facade/lang';
+import {XHR} from '@angular/compiler/src/xhr';
 
 import {XHRShim} from './xhr-shim';
 import {CustomDomAdapter} from './custom-dom-adapter';
 import {CustomRenderer, CustomRootRenderer} from './custom-renderer';
 
-export function customBootstrap(appComponentType: any, customProviders: Provider[] = null): Promise<ComponentRef> {
+export function customBootstrap(appComponentType: any, customProviders: Provider[] = null): Promise<ComponentRef<any>> {
 
   CustomDomAdapter.makeCurrent();
 
@@ -27,7 +34,7 @@ export function customBootstrap(appComponentType: any, customProviders: Provider
     logGroup: () => {
       console.log('---');
     },
-    logError: (error) => {
+    logError: (error: Error) => {
       console.error(error);
     },
     logGroupEnd: () => {
@@ -36,21 +43,31 @@ export function customBootstrap(appComponentType: any, customProviders: Provider
   };
   let platformProviders = [
     PLATFORM_COMMON_PROVIDERS,
-    provide(XHR, {useClass: XHRShim}),
-    provide(ExceptionHandler, {useFactory: () => new ExceptionHandler(logger, true), deps: []})
+    provide(XHR, { useClass: XHRShim }),
+    provide(ExceptionHandler, { useFactory: () => new ExceptionHandler(logger, true), deps: [] })
   ];
 
   let appProviders = [
     APPLICATION_COMMON_PROVIDERS,
     COMPILER_PROVIDERS,
+    SanitizationService,
     CustomRootRenderer,
-    provide(RootRenderer, {useClass: CustomRootRenderer}),
+    provide(RootRenderer, { useClass: CustomRootRenderer }),
     CustomRenderer,
-    provide(Renderer, {useClass: CustomRenderer})
+    provide(Renderer, { useClass: CustomRenderer })
   ];
   if (customProviders) {
-      appProviders.push(customProviders);
+    appProviders.push(customProviders);
   }
 
-  return platform(platformProviders).application(appProviders).bootstrap(appComponentType);
+  let platform = getPlatform();
+  if (!isPresent(platform)) {
+    platform = createPlatform(ReflectiveInjector.resolveAndCreate(platformProviders));
+  }
+
+
+  reflector.reflectionCapabilities = new ReflectionCapabilities();
+  let appInjector = ReflectiveInjector.resolveAndCreate(appProviders, platform.injector);
+  return coreLoadAndBootstrap(appInjector, appComponentType);
 }
+

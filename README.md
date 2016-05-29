@@ -11,11 +11,11 @@ Prepare:
 
 Compile:
 
-    tsc -p .
+    tsc
 
 Run:
 
-    node src/app/boot.js
+    npm start
 
 ## License
 
